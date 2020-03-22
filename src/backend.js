@@ -37,7 +37,7 @@ const dbUrl = 'mongodb://localhost/ufrj'
         res.sendFile(__dirname+"/assets/logolab.jpg");
       });
     app.get('/', function (req, res) {
-        res.sendFile(__dirname + '/view/home.html');
+        res.sendFile(__dirname + '/view/login.html');
         });
 
     app.get('/anamnese', function (req, res) {
@@ -47,6 +47,11 @@ const dbUrl = 'mongodb://localhost/ufrj'
     app.get('/ocorrencias', function (req, res) {
         res.sendFile(__dirname + '/view/mapa.html')
         })
+
+        app.post('/login', upload.array(),function(req, res) {
+          console.log(req.body)
+          res.json(req.body)
+      })
 
 
     app.get('/ocorrencias/data', function (req, res) {
