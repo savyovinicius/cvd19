@@ -10,9 +10,7 @@
    var json={}
 
    function vericaCep(obj,checkbox){
-         montarReq(obj,checkbox)//mantendo o padrao de montagem (precisa ser revisto)
-         //gambiarra do cep aqui
-         //https://viacep.com.br/ws/20765171/json/
+         montarReq(obj,checkbox)
          let cep = new XMLHttpRequest();
            let url = 'https://viacep.com.br/ws/'+obj.value+'/json/'
            cep.open("get", url, false) 
@@ -23,7 +21,7 @@
              e=document.getElementById("endereco")
              e.value= valid.logradouro +","+valid.bairro+"," + valid.uf
              e.disabled=true
-             montarReq(e,checkbox)//mantendo o padrao de montagem (precisa ser revisto)
+             montarReq(e,checkbox)
            }
          
    }
