@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>Mapa</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<link src="https://ajax.googleapis.com/ajax/libs/jqueremaily/3.1.0/jquery.min.js"> </link>
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+	<header class="header bg-light">
+			<div class="row align-items-center">
+				<div class="col-1">
+					<span onclick="window.location.href='/'" class="fas fa-home"></span>
+				</div>
+				<div class="col-3">
+					<img src= "../assets/logoufrj.jpg" />
+				</div>
+				<div class="col-3">
+					<img src="../assets/logoestadorj.jpg"/>
+				</div>
+				<div class="col-3">
+					<img src="../assets/logocorona.jpg"/>
+				</div>
+				<div class="col-2"></div>
+			</div>
+	</header>
+
+	<main>
+		<div class="container bg-light mapa">
+			<div class="row">
+				<div class="col-12">
+					<h4>Mapeamento de ocorrências do Novo Coronavírus (2019-nCoV) no estado do Rio de Janeiro</h4>
+				</div>
+			</div>
+
+			<br/>
+
+			<div class="row">
+					<div class="form-check form-check-inline col-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input checked type="radio" name="sitSelecionada" id="sel_todos" value="todos" onclick="Restart(this.value)">
+							</div>
+						</div>
+						<label class="form-check-label" for="sel_todos">Todos</label>
+					</div>
+
+					<div class="form-check form-check-inline col-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text bg-dark">
+								<input type="radio" name="sitSelecionada" id="sel_obitos" value="Obito" class="form-check-input" onclick="Restart(this.value)">
+							</div>
+						</div>
+						<label class="form-check-label" for="sel_obitos">Óbito</label>
+					</div>
+
+					<div class="form-check form-check-inline col-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text bg-success">
+								<input type="radio" name="sitSelecionada" id="sel_cura" value="Cura" class="form-check-input" onclick="Restart(this.value)">
+							</div>
+						</div>
+						<label class="form-check-label" for="sel_cura">Cura</label>
+					</div>
+
+					<div class="form-check form-check-inline col-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text bg-danger">
+								<input type="radio" name="sitSelecionada" id="sel_sintomatico" value="Sintomatico" class="form-check-input" onclick="Restart(this.value)">
+							</div>
+						</div>
+						<label class="form-check-label" for="sel_sintomatico">Sintomático</label>
+					</div>
+
+					<div class="form-check form-check-inline col-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text bg-primary">
+								<input type="radio" name="sitSelecionada" id="sel_ignorado" value="Ignorado" class="form-check-input" onclick="Restart(this.value)">
+							</div>
+						</div>
+						<label class="form-check-label" for="sel_ignorado">Ignorado</label>
+					</div>
+			</div>
+
+			<br/>
+
+			<div class="row container_mapa">
+				<div class="col-12">
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer class="footer sticky-bottom bg-light">
+		<div class="row">
+			<div class="col-3">
+				<img src="../assets/logonce.png" />
+			</div>
+			<div class="col-3">
+				<img src="../assets/logocoppe.jpg" />
+			</div>
+			<div class="col-3"></div>
+			<div class="col-3">
+				<span>
+					<b>Desenvolvido por:</b>
+					<img src="../assets/logolab.jpg"/>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		var gradientRed = [
+			'rgba(255, 0, 0, 0)',
+			'rgba(255, 0, 0, 0.7)',
+			'rgba(255, 0, 0, 0.8)',
+			'rgba(255, 0, 0, 0.9)',
+			'rgba(255, 0, 0, 1)'
+		]
+
+		var gradientGreen = [
+			'rgba(0, 255, 0, 0)',
+			'rgba(0, 255, 0, 0.1)',
+			'rgba(0, 255, 0, 0.2)',
+			'rgba(0, 255, 0, 0.3)',
+			'rgba(0, 255, 0, 0.4)',
+			'rgba(0, 255, 0, 0.5)',
+			'rgba(0, 255, 0, 0.6)',
+			'rgba(0, 255, 0, 0.7)',
+			'rgba(0, 255, 0, 0.8)',
+			'rgba(0, 255, 0, 0.9)',
+			'rgba(0, 255, 0, 1)'
+		]
+
+		var gradientBlue = [
+			'rgba(0, 0, 255, 0)',
+			'rgba(0, 0, 255, 0.1)',
+			'rgba(0, 0, 255, 0.2)',
+			'rgba(0, 0, 255, 0.3)',
+			'rgba(0, 0, 255, 0.4)',
+			'rgba(0, 0, 255, 0.5)',
+			'rgba(0, 0, 255, 0.6)',
+			'rgba(0, 0, 255, 0.7)',
+			'rgba(0, 0, 255, 0.8)',
+			'rgba(0, 0, 255, 0.9)',
+			'rgba(0, 0, 255, 1)'
+		]
+
+		var gradientBlack = [
+			'rgba(0, 0 , 0, 0)',
+			'rgba(0, 0, 0, 0.1)',
+			'rgba(0, 0, 0, 0.2)',
+			'rgba(0, 0, 0, 0.3)',
+			'rgba(0, 0, 0, 0.4)',
+			'rgba(0, 0, 0, 0.5)',
+			'rgba(0, 0, 0, 0.6)',
+			'rgba(0, 0, 0, 0.7)',
+			'rgba(0, 0, 0, 0.8)',
+			'rgba(0, 0, 0, 0.9)',
+			'rgba(0, 0, 0, 1)'
+		]
+
+		//var geocoder;
+		var map;
+		var heatmap
+		var situacao='todos'
+
+		function initMap() {
+			var map = new google.maps.Map(
+				document.getElementById("map"), {
+				center: new google.maps.LatLng(-22.8576, -43.2004),
+				zoom: 10,
+			});
+			var coordinates = [{}];
+			var bounds = new google.maps.LatLngBounds();
+
+			function getEnderecos() {
+				return new Promise(function (resolve, reject) {
+
+					var xhr = new XMLHttpRequest();
+					var url = 'http://' + window.location.host + '/ocorrencias/data' + '?situacao=' + situacao
+					xhr.open("GET", url, true)
+					xhr.onload = function (e) {
+						var enderecos = JSON.parse(xhr.response).data
+						
+						resolve(enderecos)  
+						
+
+					}
+					xhr.send();
+				})
+			}
+			getEnderecos()
+				.then(function (enderecos) {
+					features={Cura:gradientGreen,Obito:gradientBlack,Ignorado:gradientBlue,Sintomatico:gradientRed}
+					Object.keys(enderecos).forEach( (item) => {
+						var addressData = []
+
+						enderecos[item].forEach( (location) => {
+							lat = location[0]
+							long= location[1]
+							//addressData.push(new google.maps.LatLng(parseFloat(location[0]),parseFloat(location[1]))) 
+							addressData.push(new google.maps.LatLng(lat,long))  
+						})
+						heatmap = new google.maps.visualization.HeatmapLayer({
+									data: addressData,
+									radius: 10,
+									dissipating: true,
+									opacity:1,
+									gradient: features[item]
+						})
+						heatmap.setMap(map)
+					})
+					
+				})
+		}
+		
+		function Restart(sitSelecionada) {
+			situacao=sitSelecionada
+			map = new google.maps.Map(
+				document.getElementById("map"), {
+				center: new google.maps.LatLng(-22.8576, -43.2004),
+				zoom: 10,
+			})
+			initMap()
+				
+		}
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5sPPL58np_vCYP9laO4QbJdH3WT71tc&libraries=places,visualization&callback=initMap"></script>
+</body>
+</html>
